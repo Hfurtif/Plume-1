@@ -1,0 +1,6 @@
+{
+  "name": "Plume - Gestion Scolaire de la Maternelle à la Terminale",
+  "description": "Application moderne et futuriste de gestion d'établissement scolaire : comptabilité avancée, saisie et verrouillage des notes, bulletins officiels, certificats de scolarité et portail parent.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
