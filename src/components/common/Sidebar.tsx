@@ -24,7 +24,10 @@ import {
   Settings,
   LogOut,
   Globe,
-  RotateCcw
+  RotateCcw,
+  Sun,
+  Moon,
+  Laptop
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useApp } from '../../context/AppContext';
@@ -45,6 +48,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentTab, onSelectTab, isOpe
     switchRoleQuick,
     language,
     setLanguage,
+    theme,
+    themeMode,
+    setThemeMode,
     openExportModal, 
     setIsAiImportModalOpen, 
     t, 
@@ -439,6 +445,58 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentTab, onSelectTab, isOpe
                     {l}
                   </button>
                 ))}
+              </div>
+            </div>
+
+            {/* Quick Theme Switcher in Sidebar */}
+            <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400">
+              <span className="flex items-center gap-1.5 text-slate-400">
+                {themeMode === 'system' ? (
+                  <Laptop className="w-3.5 h-3.5 text-cyan-400" />
+                ) : theme === 'dark' ? (
+                  <Moon className="w-3.5 h-3.5 text-cyan-400" />
+                ) : (
+                  <Sun className="w-3.5 h-3.5 text-amber-500" />
+                )}
+                <span>Thème</span>
+              </span>
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => setThemeMode('system')}
+                  className={`px-1.5 py-0.5 rounded-md text-[10px] font-bold transition-colors cursor-pointer ${
+                    themeMode === 'system'
+                      ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
+                      : 'text-slate-400 hover:text-white bg-slate-950/80 border border-slate-800'
+                  }`}
+                  title="Thème automatique (selon le système)"
+                >
+                  Auto
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setThemeMode('light')}
+                  className={`px-1.5 py-0.5 rounded-md text-[10px] font-bold transition-colors cursor-pointer ${
+                    themeMode === 'light'
+                      ? 'bg-amber-500/20 text-amber-500 border border-amber-500/40'
+                      : 'text-slate-400 hover:text-white bg-slate-950/80 border border-slate-800'
+                  }`}
+                  title="Mode Clair haute lisibilité"
+                >
+                  Clair
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setThemeMode('dark')}
+                  className={`px-1.5 py-0.5 rounded-md text-[10px] font-bold transition-colors cursor-pointer ${
+                    themeMode === 'dark'
+                      ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
+                      : 'text-slate-400 hover:text-white bg-slate-950/80 border border-slate-800'
+                  }`}
+                  title="Mode Sombre reposant"
+                >
+                  Sombre
+                </button>
               </div>
             </div>
           </motion.div>

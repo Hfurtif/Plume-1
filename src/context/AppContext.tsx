@@ -271,10 +271,35 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   const [language, setLanguageState] = useState<Language>(() => getSaved('lang', 'fr'));
   
-  // Application is permanently locked to Dark Theme
-  const systemPreference: 'dark' | 'light' = 'dark';
-  const themeMode: ThemeMode = 'dark';
-  const theme: 'dark' | 'light' = 'dark';
+  // Theme state: system, dark, or light
+  const [themeMode, setThemeModeState] = useState<ThemeMode>(() => getSaved('theme_mode', 'system'));
+  const [systemPreference, setSystemPreference] = useState<'dark' | 'light'>(() => {
+    if (typeof window !== 'undefined' && window.matchMedia) {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    return 'dark';
+  });
+
+  // Derived effective active theme
+  const theme: 'dark' | 'light' = themeMode === 'system' ? systemPreference : themeMode;
+
+  // Listen to OS / Browser system theme preference changes dynamically
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return;
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const updatePref = (e: MediaQueryListEvent | MediaQueryList) => {
+      setSystemPreference(e.matches ? 'dark' : 'light');
+    };
+    updatePref(mediaQuery);
+
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener('change', updatePref);
+      return () => mediaQuery.removeEventListener('change', updatePref);
+    } else if ((mediaQuery as any).addListener) {
+      (mediaQuery as any).addListener(updatePref);
+      return () => (mediaQuery as any).removeListener(updatePref);
+    }
+  }, []);
   
   const [users, setUsers] = useState<UserAccount[]>(() => getSaved('users', INITIAL_USERS));
   const [activeRole, setActiveRole] = useState<UserRole>(() => getSaved('activeRole', 'admin'));
@@ -439,20 +464,38 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   useEffect(() => { localStorage.setItem('plume_school_profile', JSON.stringify(schoolProfile)); }, [schoolProfile]);
   useEffect(() => { localStorage.setItem('plume_registered_schools', JSON.stringify(registeredSchools)); }, [registeredSchools]);
 
-  // Permanently enforce dark theme on document element
+  // Synchronize active theme with document root & localStorage
   useEffect(() => {
     const root = document.documentElement;
-    root.classList.add('dark');
-    root.classList.remove('light');
-    root.setAttribute('data-theme', 'dark');
-    root.style.colorScheme = 'dark';
+    const body = document.body;
+
+    if (theme === 'dark') {
+      root.classList.add('dark');
+      root.classList.remove('light');
+      root.setAttribute('data-theme', 'dark');
+      root.style.colorScheme = 'dark';
+      if (body) {
+        body.classList.add('dark');
+        body.classList.remove('light');
+      }
+    } else {
+      root.classList.add('light');
+      root.classList.remove('dark');
+      root.setAttribute('data-theme', 'light');
+      root.style.colorScheme = 'light';
+      if (body) {
+        body.classList.add('light');
+        body.classList.remove('dark');
+      }
+    }
+
     try {
-      localStorage.setItem('plume_theme_mode', JSON.stringify('dark'));
-      localStorage.setItem('plume_theme', JSON.stringify('dark'));
+      localStorage.setItem('plume_theme', JSON.stringify(theme));
+      localStorage.setItem('plume_theme_mode', JSON.stringify(themeMode));
     } catch {
       // ignore
     }
-  }, []);
+  }, [theme, themeMode]);
 
   // One-time automatic reset for fresh use request ("renisialise pour une nouvelle utilisation")
   useEffect(() => {
@@ -495,12 +538,23 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }
   }, []);
 
-  const setThemeMode = (_mode: ThemeMode) => {
-    // Theme is permanently locked to dark mode
+  const setThemeMode = (mode: ThemeMode) => {
+    setThemeModeState(mode);
+    try {
+      localStorage.setItem('plume_theme_mode', JSON.stringify(mode));
+    } catch {
+      // ignore
+    }
   };
 
   const toggleTheme = () => {
-    // Theme is permanently locked to dark mode
+    if (themeMode === 'system') {
+      setThemeMode(theme === 'dark' ? 'light' : 'dark');
+    } else if (themeMode === 'dark') {
+      setThemeMode('light');
+    } else {
+      setThemeMode('system');
+    }
   };
 
   const setLanguage = (lang: Language) => {

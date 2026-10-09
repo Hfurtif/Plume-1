@@ -425,32 +425,128 @@ export const UserSettingsModal: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Permanent Dark Theme Display */}
+                {/* Theme Mode Selector (Auto / Clair / Sombre) */}
                 <div className="space-y-3 pt-4 border-t border-slate-800">
                   <div className="flex items-center justify-between">
                     <label className="text-xs font-bold uppercase tracking-wider text-slate-300 block">
                       Thème visuel & Apparence
                     </label>
-                    <span className="text-[10px] text-cyan-400 font-mono flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-                      100% Sombre Permanent
+                    <span className="text-[10px] text-cyan-400 font-medium flex items-center gap-1.5">
+                      {themeMode === 'system' ? (
+                        <>
+                          <Laptop className="w-3.5 h-3.5" />
+                          <span>Système ({systemPreference === 'dark' ? 'Sombre' : 'Clair'})</span>
+                        </>
+                      ) : themeMode === 'light' ? (
+                        <>
+                          <Sun className="w-3.5 h-3.5 text-amber-500" />
+                          <span className="text-amber-500 font-semibold">Mode Clair Actif</span>
+                        </>
+                      ) : (
+                        <>
+                          <Moon className="w-3.5 h-3.5" />
+                          <span>Mode Sombre Actif</span>
+                        </>
+                      )}
                     </span>
                   </div>
-                  <div className="p-4 rounded-2xl bg-cyan-950/20 border border-cyan-500/30 flex items-start sm:items-center gap-3.5 shadow-inner">
-                    <div className="p-3 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 shrink-0">
-                      <Moon className="w-5 h-5 fill-cyan-400/20" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-bold text-white">Thème Sombre Exclusif</span>
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-                          Toujours Actif
-                        </span>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                    {/* Option 1: Automatique (Système) */}
+                    <motion.button
+                      type="button"
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setThemeMode('system')}
+                      className={`flex flex-col items-start p-3.5 rounded-2xl border text-left transition-all cursor-pointer relative ${
+                        themeMode === 'system'
+                          ? 'bg-cyan-500/15 border-cyan-500/50 shadow-md shadow-cyan-950/20'
+                          : 'bg-slate-950/40 border-slate-800 hover:bg-slate-800/60'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between w-full mb-2">
+                        <div className={`p-2 rounded-xl border ${
+                          themeMode === 'system' 
+                            ? 'bg-cyan-500/20 border-cyan-500/40 text-cyan-400' 
+                            : 'bg-slate-850 border-slate-700/60 text-slate-400'
+                        }`}>
+                          <Laptop className="w-4 h-4" />
+                        </div>
+                        {themeMode === 'system' && (
+                          <div className="w-5 h-5 rounded-full bg-cyan-500 text-slate-950 flex items-center justify-center font-bold">
+                            <Check className="w-3 h-3 stroke-[3]" />
+                          </div>
+                        )}
                       </div>
-                      <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-                        L'application est verrouillée en thème sombre pour offrir un confort oculaire optimal, une ergonomie supérieure et un contraste maximal lors des longues sessions de gestion scolaire.
-                      </p>
-                    </div>
+                      <div className="text-xs font-bold text-white mb-0.5">Automatique</div>
+                      <div className="text-[11px] text-slate-400 leading-snug">
+                        Selon le système ({systemPreference === 'dark' ? 'sombre' : 'clair'})
+                      </div>
+                    </motion.button>
+
+                    {/* Option 2: Clair */}
+                    <motion.button
+                      type="button"
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setThemeMode('light')}
+                      className={`flex flex-col items-start p-3.5 rounded-2xl border text-left transition-all cursor-pointer relative ${
+                        themeMode === 'light'
+                          ? 'bg-amber-500/15 border-amber-500/50 shadow-md shadow-amber-950/20'
+                          : 'bg-slate-950/40 border-slate-800 hover:bg-slate-800/60'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between w-full mb-2">
+                        <div className={`p-2 rounded-xl border ${
+                          themeMode === 'light' 
+                            ? 'bg-amber-500/20 border-amber-500/40 text-amber-500' 
+                            : 'bg-slate-850 border-slate-700/60 text-slate-400'
+                        }`}>
+                          <Sun className="w-4 h-4" />
+                        </div>
+                        {themeMode === 'light' && (
+                          <div className="w-5 h-5 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center font-bold">
+                            <Check className="w-3 h-3 stroke-[3]" />
+                          </div>
+                        )}
+                      </div>
+                      <div className="text-xs font-bold text-white mb-0.5">Mode Clair</div>
+                      <div className="text-[11px] text-slate-400 leading-snug">
+                        Lumineux, haute lisibilité & netteté
+                      </div>
+                    </motion.button>
+
+                    {/* Option 3: Sombre */}
+                    <motion.button
+                      type="button"
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setThemeMode('dark')}
+                      className={`flex flex-col items-start p-3.5 rounded-2xl border text-left transition-all cursor-pointer relative ${
+                        themeMode === 'dark'
+                          ? 'bg-cyan-500/15 border-cyan-500/50 shadow-md shadow-cyan-950/20'
+                          : 'bg-slate-950/40 border-slate-800 hover:bg-slate-800/60'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between w-full mb-2">
+                        <div className={`p-2 rounded-xl border ${
+                          themeMode === 'dark' 
+                            ? 'bg-cyan-500/20 border-cyan-500/40 text-cyan-400' 
+                            : 'bg-slate-850 border-slate-700/60 text-slate-400'
+                        }`}>
+                          <Moon className="w-4 h-4" />
+                        </div>
+                        {themeMode === 'dark' && (
+                          <div className="w-5 h-5 rounded-full bg-cyan-500 text-slate-950 flex items-center justify-center font-bold">
+                            <Check className="w-3 h-3 stroke-[3]" />
+                          </div>
+                        )}
+                      </div>
+                      <div className="text-xs font-bold text-white mb-0.5">Mode Sombre</div>
+                      <div className="text-[11px] text-slate-400 leading-snug">
+                        Sombre élégant, reposant pour les yeux
+                      </div>
+                    </motion.button>
                   </div>
                 </div>
 

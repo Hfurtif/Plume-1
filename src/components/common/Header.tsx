@@ -810,6 +810,23 @@ export const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onOpenShortcuts
             </AnimatePresence>
           </div>
 
+          {/* Quick Theme Switcher Button (Auto / Clair / Sombre) */}
+          <motion.button
+            whileTap={{ scale: 0.92 }}
+            onClick={toggleTheme}
+            className="flex p-1.5 sm:p-2 rounded-xl text-slate-400 hover:text-cyan-400 hover:bg-slate-900 border border-slate-800/80 transition-colors shrink-0 cursor-pointer"
+            title={`Thème : ${themeMode === 'system' ? `Auto (${theme === 'dark' ? 'Sombre' : 'Clair'})` : theme === 'dark' ? 'Sombre' : 'Clair'} • Cliquer pour basculer`}
+            aria-label="Basculer le thème"
+          >
+            {themeMode === 'system' ? (
+              <Laptop className="w-4 h-4 text-cyan-400" />
+            ) : theme === 'dark' ? (
+              <Moon className="w-4 h-4 text-cyan-400" />
+            ) : (
+              <Sun className="w-4 h-4 text-amber-500" />
+            )}
+          </motion.button>
+
           {/* Settings Button (Accessible on Mobile, Tablet & Desktop) */}
           <motion.button
             whileTap={{ scale: 0.92, rotate: 20 }}

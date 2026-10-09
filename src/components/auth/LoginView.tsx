@@ -19,7 +19,10 @@ import {
   BookOpen,
   MapPin,
   Building,
-  Clock
+  Clock,
+  Sun,
+  Moon,
+  Laptop
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useApp } from '../../context/AppContext';
@@ -34,6 +37,9 @@ export const LoginView: React.FC = () => {
     students,
     schoolProfile,
     registeredSchools,
+    theme,
+    themeMode,
+    toggleTheme,
     setIsSchoolRegisterModalOpen,
     setIsSubscriptionModalOpen,
     daysRemaining,
@@ -159,7 +165,34 @@ export const LoginView: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-3 sm:p-6 bg-slate-950 text-slate-100 relative overflow-hidden">
+    <div className={`min-h-screen flex items-center justify-center p-3 sm:p-6 ${theme === 'dark' ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-900'} relative overflow-hidden`}>
+      
+      {/* Floating Theme Switcher Button */}
+      <div className="absolute top-4 right-4 z-20">
+        <motion.button
+          whileTap={{ scale: 0.92 }}
+          onClick={toggleTheme}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-700/80 bg-slate-900/80 hover:bg-slate-800 text-xs font-medium text-slate-300 hover:text-white transition-all shadow-md cursor-pointer backdrop-blur-md"
+          title={`Thème actuel : ${themeMode === 'system' ? 'Auto (Système)' : theme === 'dark' ? 'Sombre' : 'Clair'} • Cliquer pour changer`}
+        >
+          {themeMode === 'system' ? (
+            <>
+              <Laptop className="w-3.5 h-3.5 text-cyan-400" />
+              <span>Auto</span>
+            </>
+          ) : theme === 'dark' ? (
+            <>
+              <Moon className="w-3.5 h-3.5 text-cyan-400" />
+              <span>Sombre</span>
+            </>
+          ) : (
+            <>
+              <Sun className="w-3.5 h-3.5 text-amber-500" />
+              <span>Clair</span>
+            </>
+          )}
+        </motion.button>
+      </div>
       
       {/* Background glowing animated orbs */}
       <motion.div 

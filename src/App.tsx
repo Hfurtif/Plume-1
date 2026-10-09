@@ -180,7 +180,7 @@ const AppContent: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col antialiased selection:bg-cyan-500 selection:text-white transition-colors duration-200 w-full max-w-full overflow-x-hidden relative">
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-slate-950 text-slate-100 selection:text-white' : 'bg-slate-50 text-slate-900 selection:text-slate-900'} flex flex-col antialiased selection:bg-cyan-500 transition-colors duration-200 w-full max-w-full overflow-x-hidden relative`}>
       {/* Top Header */}
       <Header 
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} 
