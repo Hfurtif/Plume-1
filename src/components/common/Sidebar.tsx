@@ -60,7 +60,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentTab, onSelectTab, isOpe
     setIsSchoolRegisterModalOpen, 
     setIsSubscriptionModalOpen, 
     setIsGoogleDriveSyncModalOpen,
-    openSettingsModal
+    openSettingsModal,
+    openPwaInstallModal
   } = useApp();
 
   const getNavItems = (role: UserRole) => {
@@ -389,6 +390,18 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentTab, onSelectTab, isOpe
             </div>
 
             {/* Google Drive & Paramètres Mini Buttons */}
+            <div 
+              onClick={() => { openPwaInstallModal(); if (onClose) onClose(); }}
+              className="p-1.5 rounded-xl border border-cyan-500/30 bg-cyan-500/10 hover:bg-cyan-500/20 text-[11px] text-cyan-300 flex items-center justify-between cursor-pointer transition-colors"
+              title="Installer Plume comme logiciel de bureau sur votre PC Windows / Mac / Linux"
+            >
+              <span className="flex items-center gap-1.5 font-bold">
+                <Laptop className="w-3.5 h-3.5 text-cyan-400" />
+                <span>Installer sur PC</span>
+              </span>
+              <Download className="w-3 h-3 text-cyan-400" />
+            </div>
+
             <div 
               onClick={() => { openSettingsModal('googledrive'); if (onClose) onClose(); }}
               className="p-1.5 rounded-xl border border-slate-800 bg-slate-950/80 hover:bg-slate-800 text-[11px] text-slate-300 flex items-center justify-between cursor-pointer transition-colors"

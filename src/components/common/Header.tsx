@@ -86,7 +86,8 @@ export const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onOpenShortcuts
     isSubscriptionRestricted,
     setIsSchoolRegisterModalOpen,
     setIsSubscriptionModalOpen,
-    setIsGoogleDriveSyncModalOpen
+    setIsGoogleDriveSyncModalOpen,
+    openPwaInstallModal
   } = useApp();
 
   const [showRoleMenu, setShowRoleMenu] = useState(false);
@@ -507,14 +508,18 @@ export const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onOpenShortcuts
             </motion.button>
           )}
 
-          {/* Permanent Dark Theme Indicator (Desktop) */}
-          <div
-            className="hidden lg:flex p-2 rounded-xl text-cyan-400 bg-slate-900/60 border border-slate-800/80 items-center gap-1.5 select-none"
-            title="Thème Sombre actif en permanence pour le confort visuel"
+          {/* Install on PC / Desktop App Trigger */}
+          <motion.button
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={openPwaInstallModal}
+            className="hidden sm:flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-gradient-to-r from-cyan-500/15 to-blue-500/15 hover:from-cyan-500/25 hover:to-blue-500/25 text-cyan-400 hover:text-cyan-300 border border-cyan-500/30 text-xs font-bold transition-all cursor-pointer shadow-sm"
+            title="Installer Plume sur PC & Bureau (Application autonome sans navigateur, mode hors-ligne)"
           >
-            <Moon className="w-4 h-4 text-cyan-400 fill-cyan-400/20" />
-            <span className="text-[10px] font-mono text-cyan-300 font-bold hidden xl:inline">Sombre</span>
-          </div>
+            <Download className="w-3.5 h-3.5 stroke-[2.5]" />
+            <span className="hidden xl:inline">Installer sur PC</span>
+            <span className="xl:hidden">App PC</span>
+          </motion.button>
 
           {/* Notifications Dropdown */}
           <div className="relative">

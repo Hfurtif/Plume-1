@@ -26,6 +26,7 @@ import { ClassHubView } from './components/classes/ClassHubView';
 import { SchoolRegistrationModal } from './components/school/SchoolRegistrationModal';
 import { SubscriptionModal } from './components/school/SubscriptionModal';
 import { GoogleDriveSyncModal } from './components/school/GoogleDriveSyncModal';
+import { PwaInstallModal } from './components/pwa/PwaInstallModal';
 
 const AppContent: React.FC = () => {
   const { 
@@ -54,7 +55,9 @@ const AppContent: React.FC = () => {
     isSubscriptionRestricted,
     setIsSubscriptionModalOpen,
     schoolProfile,
-    daysRemaining
+    daysRemaining,
+    isPwaInstallModalOpen,
+    setIsPwaInstallModalOpen
   } = useApp();
 
   const [currentTab, setCurrentTab] = useState<string>('dashboard');
@@ -308,6 +311,12 @@ const AppContent: React.FC = () => {
 
       {/* Google Drive & Cloud Database Synchronization Modal */}
       <GoogleDriveSyncModal />
+
+      {/* PWA & Desktop PC Installation Modal */}
+      <PwaInstallModal 
+        isOpen={isPwaInstallModalOpen} 
+        onClose={() => setIsPwaInstallModalOpen(false)} 
+      />
     </div>
   );
 };

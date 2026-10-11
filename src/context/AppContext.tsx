@@ -254,6 +254,11 @@ interface AppContextType {
   setIsSchoolRegisterModalOpen: (open: boolean) => void;
   isSubscriptionModalOpen: boolean;
   setIsSubscriptionModalOpen: (open: boolean) => void;
+
+  // PWA / Desktop PC Installation Modal
+  isPwaInstallModalOpen: boolean;
+  setIsPwaInstallModalOpen: (open: boolean) => void;
+  openPwaInstallModal: () => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -439,6 +444,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [isSchoolRegisterModalOpen, setIsSchoolRegisterModalOpen] = useState<boolean>(false);
   const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState<boolean>(false);
   const [isGoogleDriveSyncModalOpen, setIsGoogleDriveSyncModalOpen] = useState<boolean>(false);
+
+  // PWA / Desktop PC Installation Modal
+  const [isPwaInstallModalOpen, setIsPwaInstallModalOpen] = useState<boolean>(false);
+  const openPwaInstallModal = () => setIsPwaInstallModalOpen(true);
 
   // Sync to local storage
   useEffect(() => { localStorage.setItem('plume_lang', JSON.stringify(language)); }, [language]);
@@ -2584,7 +2593,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       isSchoolRegisterModalOpen,
       setIsSchoolRegisterModalOpen,
       isSubscriptionModalOpen,
-      setIsSubscriptionModalOpen
+      setIsSubscriptionModalOpen,
+      isPwaInstallModalOpen,
+      setIsPwaInstallModalOpen,
+      openPwaInstallModal
     }}>
       {children}
     </AppContext.Provider>

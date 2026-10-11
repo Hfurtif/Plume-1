@@ -62,7 +62,8 @@ export const UserSettingsModal: React.FC = () => {
     classes,
     certificates,
     addNotification,
-    resetForNewUse
+    resetForNewUse,
+    openPwaInstallModal
   } = useApp();
 
   // Active sub-tab in settings: 'profile' | 'googledrive' | 'reset'
@@ -548,6 +549,34 @@ export const UserSettingsModal: React.FC = () => {
                       </div>
                     </motion.button>
                   </div>
+                </div>
+
+                {/* PC & Desktop Installation Card (Demande Utilisateur) */}
+                <div className="p-4 rounded-2xl bg-gradient-to-r from-cyan-950/40 via-slate-900 to-blue-950/40 border border-cyan-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-md">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2.5 rounded-xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 shrink-0">
+                      <Laptop className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <span className="text-xs font-bold text-white block flex items-center gap-2">
+                        <span>Installation sur Ordinateur / PC</span>
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 font-mono font-bold border border-cyan-500/30">
+                          Windows • Mac • Linux
+                        </span>
+                      </span>
+                      <span className="text-[11px] text-slate-300">
+                        Installez Plume comme logiciel autonome sur votre bureau avec icône dédiée et mode hors-ligne.
+                      </span>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={openPwaInstallModal}
+                    className="w-full sm:w-auto px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 text-xs font-black shrink-0 transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-md"
+                  >
+                    <Download className="w-3.5 h-3.5 stroke-[2.5]" />
+                    <span>Installer sur PC</span>
+                  </button>
                 </div>
 
                 {/* Notifications toggle */}
